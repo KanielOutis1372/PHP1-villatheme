@@ -3,7 +3,9 @@ add:
         - add               -> ok
         - validate
     + add property://
-        - add
+        - add: 
+                + lấy id product: vừa thêm
+                + build qurey 
         - validate
 update: 
         - update + validate:

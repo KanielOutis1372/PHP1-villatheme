@@ -1,5 +1,5 @@
 <?php
-    include('../models/MProduct.php');
+include('../models/MProduct.php');
 
 ?>
 
@@ -32,7 +32,7 @@
 
         <div class="row">
             <div class="column">
-                <form class="ui form">
+                <form class="ui form" method="POST" enctype="multipart/form-data">
                     <hr>
                     <div class="field">
                         <label for="skuId">TAGS</label>
@@ -48,7 +48,7 @@
                             $tags = MProduct::getAllTags();
                             foreach ($tags as $tag) {
                                 echo '<div class="ui checkbox">
-                                    <input type="checkbox" name="tag_' . $tag->getId() . '">
+                                    <input type="checkbox" name="tag[]" value="' . $tag->getTagName() . '">
                                     <label>' . $tag->getTagName() . '</label>
                                 </div>';
                             }
@@ -72,7 +72,7 @@
                             $cates = MProduct::getAllCates();
                             foreach ($cates as $cate) {
                                 echo '<div class="ui checkbox">
-                                    <input type="checkbox" name="cate_' . $cate->getCateId() . '">
+                                    <input type="checkbox" name="cate[]" value="' . $cate->getCateName() . '">
                                     <label>' . $cate->getCateName() . '</label>
                                 </div>';
                             }
@@ -83,11 +83,42 @@
                     <hr>
                     <div class="field">
                         <label for="gallariesId">GALLARIES</label>
-                        <input type="file" id="gallariesId" name="gallaries" multiple>
+                        <input type="file" id="gallariesId" name="gallary[]" multiple>
                     </div>
 
-                    <button class="ui button" type="submit">Add</button>
+                    <button class="ui button" type="submit" name="submit">Add</button>
                 </form>
+
+                <?php
+                if (isset($_POST['submit'])) {
+                    $selectedTag = $_POST['tag'];
+                    foreach ($selectedTag as $tag) {
+                        echo $tag . "<br>";
+                    }
+
+                    $selectedCate = $_POST['cate'];
+                    foreach ($selectedCate as $cate) {
+                        echo $cate . "<br>";
+                    }
+
+
+                    $selectedFiles = $_FILES['gallary'];
+
+                    // Lặp qua danh sách các tệp tin được chọn
+                    for ($i = 0; $i < count($selectedFiles['name']); $i++) {
+                        echo $selectedFiles['name'][$i] . "<br>";
+                        // $fileTmpName = $selectedFiles['tmp_name'][$i];
+                        // $fileSize = $selectedFiles['size'][$i];
+                        // $fileError = $selectedFiles['error'][$i];
+                        // $fileType = $selectedFiles['type'][$i];
+
+                        // // Thực hiện các xử lý với từng tệp tin
+                        // // Ví dụ: Lưu tệp tin vào thư mục đích
+                        // $destination = "path/to/destination/" . $fileName;
+                        // move_uploaded_file($fileTmpName, $destination);
+                    }
+                }
+                ?>
             </div>
         </div>
     </div>

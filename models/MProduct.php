@@ -124,6 +124,10 @@
             }
             return $cateList; 
         }
+
+        public static function addProperty($tag, $property, $gallery) {
+
+        }
     }
     // print_r(MProduct::getAllCates());
 ?>
