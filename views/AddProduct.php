@@ -1,3 +1,8 @@
+<?php
+    include_once '../models/Product.php';
+    include_once '../models/MProduct.php';
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -6,10 +11,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.5.0/semantic.min.css">
-    <script src="./lib/Semantic-UI-CSS-master/semantic.min.js"></script>
-    <link rel="stylesheet" href="./styles.css">
+    <link rel="stylesheet" href="../lib/Semantic-UI-CSS-master/semantic.min.css">
+    <script src="../lib/Semantic-UI-CSS-master/semantic.min.js"></script>
+    <link rel="stylesheet" href="../css/styles.css">
 </head>
 
 <body>
@@ -57,18 +62,50 @@
                         <label for="createddateId">CREADTED DATE</label>
                         <input type="date" id="createddateId" name="createddate">
                     </div>
-                    <!-- <div class="field">
-                        <label for="modifieddateId">MODIFIED DATE</label>
-                        <input type="date" id="modifieddateId" name="modifieddate">
-                    </div> -->
+                    
+                    <div class="field">
+                        <label>TAGS</label>
+                        <div class="checkbox-group">
+                            <?php
+                            $tags = MProduct::getAllTags();
+                            foreach ($tags as $tag) {
+                                echo '<div class="ui checkbox">
+                                    <input type="checkbox" name="tag[]" value="' . $tag->getTagName() . '">
+                                    <label>' . $tag->getTagName() . '</label>
+                                </div>';
+                            }
+                            ?>
+                        </div>
+
+                    </div>
+
+                    <div class="field">
+                        <label>CATEGORIES</label>
+                        <div class="checkbox-group">
+                            <?php
+                            $cates = MProduct::getAllCates();
+                            foreach ($cates as $cate) {
+                                echo '<div class="ui checkbox">
+                                    <input type="checkbox" name="cate[]" value="' . $cate->getCateName() . '">
+                                    <label>' . $cate->getCateName() . '</label>
+                                </div>';
+                            }
+                            ?>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label for="gallariesId">GALLARIES</label>
+                        <input type="file" id="gallariesId" name="gallary[]" multiple>
+                    </div>
+
                     <button class="ui button" type="submit" name="submit">Add</button>
                 </form>
             </div>
         </div>
 
         <?php
-        include_once '../models/Product.php';
-        include_once '../models/MProduct.php';
+        
         $product = new Product();
         if (isset($_POST['submit']) && isset($_FILES['featuredimg'])) {
             $product->setSku($_POST["sku"]);
@@ -85,8 +122,31 @@
             $target_file = $target_dir . basename($_FILES["featuredimg"]["name"]);
             move_uploaded_file($_FILES["featuredimg"]["tmp_name"], $target_file);
 
-            header('location: Home.php');
+
+            $selectedTag = $_POST['tag'];
+            foreach ($selectedTag as $tag) {
+                // echo MProduct::getIdFromTag($tag) . "<br>";
+                MProduct::addProductTags(MProduct::getIdFromTag($tag));
+            }
+
+            $selectedCate = $_POST['cate'];
+            foreach ($selectedCate as $cate) {
+                // echo MProduct::getIdFromCate($cate) . "<br>";
+                MProduct::addProductCategories(MProduct::getIdFromCate($cate));
+            }
+
+            $selectedFiles = $_FILES['gallary'];
+            
+            // Lặp qua danh sách các tệp tin được chọn
+            for ($i = 0; $i < count($selectedFiles['name']); $i++) {
+                // echo $selectedFiles['name'][$i] . "<br>";
+                MProduct::addGallery($selectedFiles['name'][$i]);
+                $target_file = $target_dir . $selectedFiles['name'][$i];
+                move_uploaded_file($selectedFiles['tmp_name'][$i], $target_file);
+            }
         }
+
+        // header('location:  Home.php');
 
         ?>
 

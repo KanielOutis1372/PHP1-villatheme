@@ -1,8 +1,3 @@
-<?php
-include('../models/MProduct.php');
-
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -12,9 +7,8 @@ include('../models/MProduct.php');
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.5.0/semantic.min.css">
-    <script src="./lib/Semantic-UI-CSS-master/semantic.min.js"></script>
-    <link rel="stylesheet" href="./styles.css">
+    <link rel="stylesheet" href="../lib/Semantic-UI-CSS-master/semantic.min.css">
+    <link rel="stylesheet" href="../css/styles.css">
 </head>
 
 <body>
@@ -36,87 +30,23 @@ include('../models/MProduct.php');
                     <hr>
                     <div class="field">
                         <label for="skuId">TAGS</label>
-                        <button class="ui button pull-right">&#10009;</button>
-                        <div class="checkbox-group">
-                            <!-- <div class="ui checkbox">
-                                <input type="checkbox" name="example">
-                                <label>Make my profile visible</label>
-                            </div> -->
-
-                            <?php
-
-                            $tags = MProduct::getAllTags();
-                            foreach ($tags as $tag) {
-                                echo '<div class="ui checkbox">
-                                    <input type="checkbox" name="tag[]" value="' . $tag->getTagName() . '">
-                                    <label>' . $tag->getTagName() . '</label>
-                                </div>';
-                            }
-                            ?>
-                        </div>
-
+                        <input type="text" id="skuId" name="tagName" placeholder="Tags...">
                     </div>
 
                     <hr>
                     <div class="field">
                         <label for="titleId">CATEGORIES</label>
-                        <button class="ui button pull-right">&#10009;</button>
-                        <div class="checkbox-group">
-                            <!-- <div class="ui checkbox">
-                                <input type="checkbox" name="example">
-                                <label>Make my profile visible</label>
-                            </div> -->
-
-                            <?php
-
-                            $cates = MProduct::getAllCates();
-                            foreach ($cates as $cate) {
-                                echo '<div class="ui checkbox">
-                                    <input type="checkbox" name="cate[]" value="' . $cate->getCateName() . '">
-                                    <label>' . $cate->getCateName() . '</label>
-                                </div>';
-                            }
-                            ?>
-                        </div>
-                    </div>
-
-                    <hr>
-                    <div class="field">
-                        <label for="gallariesId">GALLARIES</label>
-                        <input type="file" id="gallariesId" name="gallary[]" multiple>
+                        <input type="text" id="skuId" name="categoryName" placeholder="Categories...">
                     </div>
 
                     <button class="ui button" type="submit" name="submit">Add</button>
                 </form>
 
                 <?php
+                include_once('../models/MProduct.php');
                 if (isset($_POST['submit'])) {
-                    $selectedTag = $_POST['tag'];
-                    foreach ($selectedTag as $tag) {
-                        echo $tag . "<br>";
-                    }
-
-                    $selectedCate = $_POST['cate'];
-                    foreach ($selectedCate as $cate) {
-                        echo $cate . "<br>";
-                    }
-
-
-                    $selectedFiles = $_FILES['gallary'];
-
-                    // Lặp qua danh sách các tệp tin được chọn
-                    for ($i = 0; $i < count($selectedFiles['name']); $i++) {
-                        echo $selectedFiles['name'][$i] . "<br>";
-                        // $fileTmpName = $selectedFiles['tmp_name'][$i];
-                        // $fileSize = $selectedFiles['size'][$i];
-                        // $fileError = $selectedFiles['error'][$i];
-                        // $fileType = $selectedFiles['type'][$i];
-
-                        // // Thực hiện các xử lý với từng tệp tin
-                        // // Ví dụ: Lưu tệp tin vào thư mục đích
-                        // $destination = "path/to/destination/" . $fileName;
-                        // move_uploaded_file($fileTmpName, $destination);
-                    }
+                    MProduct::addNewTag($_POST['tagName']);
+                    MProduct::addNewCategory($_POST['categoryName']);
                 }
                 ?>
             </div>

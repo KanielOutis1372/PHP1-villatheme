@@ -3,9 +3,9 @@ add:
         - add               -> ok
         - validate
     + add property://
-        - add: 
-                + lấy id product: vừa thêm
-                + build qurey 
+        - add: -> OK
+                + lấy id product: -> OK
+                + build `query`: -> OK
         - validate
 update: 
         - update + validate:
@@ -14,5 +14,4 @@ delete: -> delete product   -> ok
         -> delete property 
 
 search:
-
 filter:

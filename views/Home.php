@@ -7,16 +7,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.5.0/semantic.min.css">
-  <script src="./lib/Semantic-UI-CSS-master/semantic.min.js"></script>
-  <link rel="stylesheet" href="./styles.css">
+  <link rel="stylesheet" href="../lib/Semantic-UI-CSS-master/semantic.min.css">
+  <link rel="stylesheet" href="../css/styles.css">
 </head>
 
 <body>
   <div class="ui equal width grid">
     <div class="row">
       <div class="column">
-        <a href="AddProduct.php"><button class="ui primary button">Add product</button></a>
+        <a href="AddProduct2.php"><button class="ui primary button">Add product</button></a>
         <a href="AddProperty.php"><button class="ui button">Add property</button></a>
         <a href="#"><button class="ui button">Sync from VillaTheme</button></a>
       </div>
@@ -144,14 +143,21 @@
           <td><?php echo $value->getId() ?></td>
           <td><?php echo $value->getSku() ?></td>
           <td><?php echo $value->getTitle() ?></td>
-          <td><?php echo $value->getPrice() ?></td>
+          <td><?php echo '&#36;' . $value->getPrice() ?></td>
           <td><?php echo '<img width="80px" src="' . '../img/' . $value->getFeaturedImage() . '">' ?></td>
-          <td><?php echo $value->getGallery() ?></td>
+          <td>
+            <?php
+            $galleryArr = explode(',', $value->getGallery());
+            foreach ($galleryArr as $gallery) {
+              echo '<img width="80px" src="' . '../img/' . $gallery . '">';
+            }
+            ?>
+          </td>
           <td><?php echo $value->getCategory() ?></td>
           <td><?php echo $value->getTag() ?></td>
           <td>
-            <a href="Update.php/?id=<?php echo $value->getId() ?>"><i class="edit icon"></i></a>
-            <a href="Delete.php/?id=<?php echo $value->getId() ?>"><i class="trash icon"></i></a>
+            <a href="Update.php?id=<?php echo $value->getId() ?>"><i class="edit icon"></i></a>
+            <a href="Delete.php?id=<?php echo $value->getId() ?>"><i class="trash icon"></i></a>
           </td>
         </tr>
       <?php
