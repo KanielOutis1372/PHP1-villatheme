@@ -35,48 +35,71 @@ include_once '../models/MProduct.php';
                         <div class="two fields">
                             <div class="field">
                                 <label for="skuId">SKU</label>
-                                <input type="text" id="skuId" name="sku" placeholder="SKU..." value="<?php echo MProduct::getProductByID($_GET['id'])->getSku()?>">
+                                <input type="text" id="skuId" name="sku" placeholder="SKU..." value="<?php echo MProduct::getProductByID($_GET['id'])->getSku() ?>">
                             </div>
                             <div class="field">
                                 <label for="titleId">TITLE</label>
-                                <input type="text" id="titleId" name="title" placeholder="title..." value="<?php echo MProduct::getProductByID($_GET['id'])->getTitle()?>">
+                                <input type="text" id="titleId" name="title" placeholder="title..." value="<?php echo MProduct::getProductByID($_GET['id'])->getTitle() ?>">
                             </div>
                         </div>
 
                         <div class="two fields">
                             <div class="field">
                                 <label for="priceId">PRICE</label>
-                                <input type="number" id="priceId" name="price" placeholder="price..." value="<?php echo MProduct::getProductByID($_GET['id'])->getPrice()?>">
+                                <input type="number" id="priceId" name="price" placeholder="price..." value="<?php echo MProduct::getProductByID($_GET['id'])->getPrice() ?>">
                             </div>
                             <div class="field">
                                 <label for="salepriceId">SALE PRICE</label>
-                                <input type="number" id="salepriceId" name="sale-price" placeholder="sale price..." value="<?php echo MProduct::getProductByID($_GET['id'])->getSalePrice()?>">
+                                <input type="number" id="salepriceId" name="sale-price" placeholder="sale price..." value="<?php echo MProduct::getProductByID($_GET['id'])->getSalePrice() ?>">
                             </div>
                         </div>
 
                         <div class="two fields">
                             <div class="field">
                                 <label for="featuredimgId">FEAETURED IMAGE</label>
-                                <input type="file" id="featuredimgId" name="featuredimg" >
+                                <input type="file" id="featuredimgId" name="featuredimg">
+
+
                             </div>
                             <div class="field">
                                 <label for="gallariesId">GALLARIES</label>
-                                <input type="file" id="gallariesId" name="gallary[]" multiple >
+                                <input type="file" id="gallariesId" name="gallary[]" multiple>
+                                <div class="ui image label">
+                                    <img src="/images/avatar/small/ade.jpg">
+                                    Adrienne
+                                    <i class="delete icon"></i>
+                                </div>
+                                <div class="ui image label">
+                                    <img src="/images/avatar/small/zoe.jpg">
+                                    Zoe
+                                    <i class="delete icon"></i>
+                                </div>
+                                <div class="ui image label">
+                                    <img src="/images/avatar/small/nan.jpg">
+                                    Nan
+                                    <i class="delete icon"></i>
+                                </div>
                             </div>
                         </div>
 
                         <div class="two fields">
                             <div class="field">
                                 <label>TAGS</label>
-
                                 <select multiple="" class="ui dropdown" name="mySelectTag[]">
                                     <option value="">Select Tag</option>
-                                    
+
                                     <?php
-                                        $tags = MProduct::getAllTags();
-                                        foreach ($tags as $tag) {
-                                            echo '<option value="' . $tag->getTagName() . '">' . $tag->getTagName() . '</option>';
+                                    $tags = MProduct::getAllTags();
+                                    $tagUpdate = explode(',', MProduct::getProductByID($_GET['id'])->getTag());
+                                    foreach ($tags as $tag) {
+                                        foreach ($tagUpdate as $tagv) {
+                                            if ($tag->getTagName() == $tagv) {
+                                                echo '<option value="' . $tag->getTagName() . '" selected>' . $tag->getTagName() . '</option>';
+                                                break;
+                                            }
                                         }
+                                        echo '<option value="' . $tag->getTagName() . '">' . $tag->getTagName() . '</option>';
+                                    }
                                     ?>
                                 </select>
 
@@ -88,10 +111,17 @@ include_once '../models/MProduct.php';
                                 <select multiple="" class="ui dropdown" name="mySelectCate[]">
                                     <option value="">Select Category</option>
                                     <?php
-                                        $cates = MProduct::getAllCates();
-                                        foreach ($cates as $cate) {
-                                            echo '<option value="' . $cate->getCateName() . '">' . $cate->getCateName() . '</option>';
+                                    $cates = MProduct::getAllCates();
+                                    $cateUpdate = explode(',', MProduct::getProductByID($_GET['id'])->getCategory());
+                                    foreach ($cates as $cate) {
+                                        foreach ($cateUpdate as $catev) {
+                                            if ($cate->getCateName() == $catev) {
+                                                echo '<option value="' . $cate->getCateName() . '" selected>' . $cate->getCateName() . '</option>';
+                                                break;
+                                            }
                                         }
+                                        echo '<option value="' . $cate->getCateName() . '">' . $cate->getCateName() . '</option>';
+                                    }
                                     ?>
                                 </select>
                             </div>
@@ -99,7 +129,7 @@ include_once '../models/MProduct.php';
 
                         <div class="field">
                             <label for="descId">DESCRIPTION</label>
-                            <textarea name="desc" id="descId" cols="30" rows="10"><?php echo MProduct::getProductByID($_GET['id'])->getDescription()?></textarea>
+                            <textarea name="desc" id="descId" cols="30" rows="10"><?php echo MProduct::getProductByID($_GET['id'])->getDescription() ?></textarea>
                         </div>
                     </div>
                     <button class="ui button" type="submit" name="submit">Update</button>
@@ -112,8 +142,11 @@ include_once '../models/MProduct.php';
         </script>
 
         <?php
-        
-        var_dump( MProduct::getProductByID($_GET['id'])->getTag());
+
+        // $a = explode(',',MProduct::getProductByID($_GET['id'])->getTag());
+        // foreach ($a as $value) {
+        //     echo $value;
+        // }
 
         // $product = new Product();
         // if (isset($_POST['submit']) && isset($_FILES['featuredimg'])) {
@@ -155,7 +188,7 @@ include_once '../models/MProduct.php';
         //     }
         // }
 
-        
+
 
         // header('location:  Home.php');
 

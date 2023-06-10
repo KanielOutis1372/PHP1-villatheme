@@ -20,12 +20,9 @@
         <a href="#"><button class="ui button">Sync from VillaTheme</button></a>
       </div>
       <div class="column">
-        <div class="ui search">
-          <div class="ui icon input">
-            <input class="prompt" type="text" placeholder="Search product...">
-            <i class="search icon"></i>
-          </div>
-          <div class="results"></div>
+        <div class="ui icon input">
+          <input type="text" placeholder="Search...">
+          <i class="inverted circular search link icon"></i>
         </div>
       </div>
     </div>
