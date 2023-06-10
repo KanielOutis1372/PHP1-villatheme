@@ -37,33 +37,33 @@ include_once '../models/MProduct.php';
                         <div class="two fields">
                             <div class="field">
                                 <label for="skuId">SKU</label>
-                                <input type="text" id="skuId" name="sku" placeholder="SKU...">
+                                <input required type="text" id="skuId" name="sku" placeholder="SKU...">
                             </div>
                             <div class="field">
                                 <label for="titleId">TITLE</label>
-                                <input type="text" id="titleId" name="title" placeholder="title...">
+                                <input required type="text" id="titleId" name="title" placeholder="title...">
                             </div>
                         </div>
 
                         <div class="two fields">
                             <div class="field">
                                 <label for="priceId">PRICE</label>
-                                <input type="number" id="priceId" name="price" placeholder="price...">
+                                <input required type="number" id="priceId" name="price" placeholder="price...">
                             </div>
                             <div class="field">
                                 <label for="salepriceId">SALE PRICE</label>
-                                <input type="number" id="salepriceId" name="sale-price" placeholder="sale price...">
+                                <input required type="number" id="salepriceId" name="sale-price" placeholder="sale price...">
                             </div>
                         </div>
 
                         <div class="two fields">
                             <div class="field">
                                 <label for="featuredimgId">FEAETURED IMAGE</label>
-                                <input type="file" id="featuredimgId" name="featuredimg">
+                                <input required type="file" id="featuredimgId" name="featuredimg">
                             </div>
                             <div class="field">
                                 <label for="gallariesId">GALLARIES</label>
-                                <input type="file" id="gallariesId" name="gallary[]" multiple>
+                                <input required type="file" id="gallariesId" name="gallary[]" multiple>
                             </div>
                         </div>
 
@@ -71,7 +71,7 @@ include_once '../models/MProduct.php';
                             <div class="field">
                                 <label>TAGS</label>
 
-                                <select multiple="" class="ui dropdown" name="mySelectTag[]">
+                                <select required multiple="" class="ui dropdown" name="mySelectTag[]">
                                     <option value="">Select Tag</option>
                                     
                                     <?php
@@ -87,7 +87,7 @@ include_once '../models/MProduct.php';
                             <div class="field">
                                 <label>CATEGORIES</label>
 
-                                <select multiple="" class="ui dropdown" name="mySelectCate[]">
+                                <select required multiple="" class="ui dropdown" name="mySelectCate[]">
                                     <option value="">Select Category</option>
                                     <?php
                                         $cates = MProduct::getAllCates();
@@ -101,7 +101,7 @@ include_once '../models/MProduct.php';
 
                         <div class="field">
                             <label for="descId">DESCRIPTION</label>
-                            <textarea name="desc" id="descId" cols="30" rows="10"></textarea>
+                            <textarea required name="desc" id="descId" cols="30" rows="10"></textarea>
                         </div>
                     </div>
                     <button class="ui button" type="submit" name="submit">Add</button>
@@ -117,12 +117,12 @@ include_once '../models/MProduct.php';
         
         $product = new Product();
         if (isset($_POST['submit']) && isset($_FILES['featuredimg'])) {
-            $product->setSku($_POST["sku"]);
-            $product->setTitle($_POST["title"]);
+            $product->setSku(preg_replace('/\s+/', '', trim($_POST["sku"])));
+            $product->setTitle(preg_replace('/\s+/', ' ', trim($_POST["title"])));
             $product->setPrice($_POST["price"]);
             $product->setSalePrice($_POST["sale-price"]);
-            $product->setFeaturedImage($_FILES["featuredimg"]['name']);
-            $product->setDescription($_POST["desc"]);
+            $product->setFeaturedImage(trim($_FILES["featuredimg"]['name']));
+            $product->setDescription(preg_replace('/\s+/', ' ', trim($_POST["desc"])));
             $product->setCreatedDate(date('Y-m-d'));
             MProduct::addProduct($product);
 

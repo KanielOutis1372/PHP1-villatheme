@@ -65,7 +65,7 @@
         public static function getProductByID($id) {
             $conn = ConnectDB::getConnection();
             $ps = $conn->prepare("
-                SELECT P.ID, P.SKU, P.Title, P.Price, P.SalePrice, P.Description, P.CreatedDate, P.ModifiedDate,
+                SELECT P.ID, P.SKU, P.Title, P.Price, P.SalePrice, P.FeaturedImage, P.Description, P.CreatedDate, P.ModifiedDate,
                 GROUP_CONCAT(DISTINCT C.CategoryName) AS Categories,
                 GROUP_CONCAT(DISTINCT T.TagName) AS Tags,
                 GROUP_CONCAT(DISTINCT G.ImageURL) AS ImageURLs
@@ -89,7 +89,7 @@
                     $product->setTitle($row['Title']);
                     $product->setPrice($row['Price']);
                     $product->setSalePrice($row['SalePrice']);
-                    // $product->setFeaturedImage($row['FeaturedImage']);
+                    $product->setFeaturedImage($row['FeaturedImage']);
                     $product->setGallery($row['ImageURLs']);
                     $product->setDescription($row['Description']);
                     $product->setCreatedDate($row['CreatedDate']);
@@ -129,8 +129,6 @@
             $psPro->bind_param('s', $id);
             $psPro->execute();
         }
-
-
 
         public static function getAllTags() {
             $conn = ConnectDB::getConnection();
@@ -251,7 +249,48 @@
         }
         
 
+        public static function updateProduct($id, $product) {
+            $sku = $product->getSku();
+            $title = $product->getTitle();
+            $price = $product->getPrice();
+            $salePrice = $product->getSalePrice();
+            $featuredImg = $product->getFeaturedImage();
+            $desc = $product->getDescription();
+            $modifedDate = $product->getModifiedDate();
+
+            $conn = ConnectDB::getConnection();
+            $qr = 'UPDATE PRODUCTS SET SKU = ?, TITLE = ?, PRICE = ?, SALEPRICE = ?, FEATUREDIMAGE = ?, DESCRIPTION = ?, MODIFIEDDATE = ?  WHERE ID = ?';
+            $ps = $conn->prepare($qr);
+            $ps->bind_param('ssiisssi', $sku, $title, $price, $salePrice, $featuredImg, $desc, $modifedDate, $id);  
+            $ps->execute();
+        }
+
+        public static function updateProductTags($id, $tagId) {
+            $conn = ConnectDB::getConnection();
+            $qr = 'UPDATE PRODUCTTAGS SET TAGID = ? WHERE PRODUCTID = ?';
+            $ps = $conn->prepare($qr);
+            $ps->bind_param('ii', $tagId, $id);  
+            $ps->execute();
+        }
+
+        public static function updateProductCategories($id, $categoryId) {
+            $conn = ConnectDB::getConnection();
+            $qr = 'UPDATE PRODUCTCATEGORIES SET CATEGORYID = ? WHERE PRODUCTID = ?';
+            $ps = $conn->prepare($qr);
+            $ps->bind_param('ii', $categoryId, $id);  
+            $ps->execute();
+        }
+
+        public static function updateGallery($id, $imageName) {
+            $conn = ConnectDB::getConnection();
+            $qr = 'UPDATE GALLERY SET ImageURL = ? WHERE ProductID =?';
+            $ps = $conn->prepare($qr);
+            $ps->bind_param('si', $imageName, $id);
+            $ps->execute();
+        }
+
     }
     // print_r(MProduct::getIdFromTag($tagName = 'Tag 2'));
     // print_r(MProduct::getLastProductId());
-    // print_r(MProduct::getProductByID(19)->getTitle());
+    // print_r(MProduct::getProductByID(19));
+    // print_r(MProduct::getAllCates());

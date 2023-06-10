@@ -3,5 +3,5 @@
     if(!empty($_GET)) {
         MProduct::delete($_GET['id']);
     }
-    header('location: ../Home.php');
+    header('location: Home.php');
 ?>

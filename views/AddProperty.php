@@ -45,8 +45,8 @@
                 <?php
                 include_once('../models/MProduct.php');
                 if (isset($_POST['submit'])) {
-                    MProduct::addNewTag($_POST['tagName']);
-                    MProduct::addNewCategory($_POST['categoryName']);
+                    MProduct::addNewTag(trim($_POST['tagName']));
+                    MProduct::addNewCategory(trim($_POST['categoryName']));
                 }
                 ?>
             </div>

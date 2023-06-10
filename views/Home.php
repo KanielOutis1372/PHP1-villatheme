@@ -1,3 +1,7 @@
+<?php
+  include_once('../models/MProduct.php');
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -12,6 +16,10 @@
 </head>
 
 <body>
+
+  <?php
+    $arrProduct = MProduct::getAllProduct();
+  ?>
   <div class="ui equal width grid">
     <div class="row">
       <div class="column">
@@ -35,9 +43,11 @@
             Date
             <i class="dropdown icon"></i>
             <div class="menu">
-              <div class="item">Choice 1</div>
-              <div class="item">Choice 2</div>
-              <div class="item">Choice 3</div>
+              <?php
+                foreach ($arrProduct as $value) {
+                  echo '<div class="item">'. $value->getCreatedDate() .'</div>';
+                }
+              ?>
             </div>
           </div>
         </div>
@@ -62,9 +72,13 @@
             Category
             <i class="dropdown icon"></i>
             <div class="menu">
-              <div class="item">Choice 1</div>
-              <div class="item">Choice 2</div>
-              <div class="item">Choice 3</div>
+              <?php
+                
+                foreach (MProduct::getAllCates() as $value) {
+                  echo '<div class="item">'. $value->getCateName() .'</div>';
+                }
+              ?>
+              
             </div>
           </div>
         </div>
@@ -76,9 +90,11 @@
             Select tag
             <i class="dropdown icon"></i>
             <div class="menu">
-              <div class="item">Choice 1</div>
-              <div class="item">Choice 2</div>
-              <div class="item">Choice 3</div>
+            <?php
+                foreach (MProduct::getAllTags() as $value) {
+                  echo '<div class="item">'. $value->getTagName() .'</div>';
+                }
+              ?>
             </div>
           </div>
         </div>
@@ -101,20 +117,22 @@
       </div>
 
       <div class="column">
-        <div class="ui segment"></div>
+        <div class="ui input">
+          <input type="number" placeholder="Price from">
+        </div>
       </div>
 
       <div class="column">
-        <div class="ui segment"></div>
+        <div class="ui input">
+          <input type="number" placeholder="Price to">
+        </div>
       </div>
-
 
       <div class="column">
         <button class="ui button">Filter</button>
       </div>
     </div>
   </div>
-
 
   <table class="ui celled table">
     <thead>
@@ -132,12 +150,10 @@
     </thead>
     <tbody>
       <?php
-      include_once('../models/MProduct.php');
-      $arrProduct = MProduct::getAllProduct();
       foreach ($arrProduct as $value) {
       ?>
         <tr>
-          <td><?php echo $value->getId() ?></td>
+          <td><?php echo $value->getCreatedDate() ?></td>
           <td><?php echo $value->getSku() ?></td>
           <td><?php echo $value->getTitle() ?></td>
           <td><?php echo '&#36;' . $value->getPrice() ?></td>
@@ -153,7 +169,7 @@
           <td><?php echo $value->getCategory() ?></td>
           <td><?php echo $value->getTag() ?></td>
           <td>
-            <a href="Update.php?id=<?php echo $value->getId() ?>"><i class="edit icon"></i></a>
+            <a href="Update2.php?id=<?php echo $value->getId() ?>"><i class="edit icon"></i></a>
             <a href="Delete.php?id=<?php echo $value->getId() ?>"><i class="trash icon"></i></a>
           </td>
         </tr>

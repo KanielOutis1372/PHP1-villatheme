@@ -1,17 +1,19 @@
 add: 
     + add product:
         - add               -> ok
-        - validate
+        - validate          -> ok
     + add property://
         - add: -> OK
                 + lấy id product: -> OK
                 + build `query`: -> OK
-        - validate
+        - validate             ->ok
 update: 
-        - update + validate:
+        - update: `build nốt` ---> còn cập nhật galleries
+        - validate: -> ok
 
 delete: -> delete product   -> ok
-        -> delete property 
+        -> delete property of product -> ok
 
-search:
 filter:
+
+phân trang: 
